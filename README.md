@@ -1,27 +1,25 @@
-# Disneyland Paris Queue Analysis with Akka Streams
+# Disneyland Paris Queue Analysis
 
-[cite_start]A Pipe-and-Filter architecture implemented in Scala 3 using Akka Streams to process and analyze ride wait times at Disneyland Paris[cite: 222, 260]. This project was developed as a solution for the Software Architectures course.
+A data processing pipeline built with Scala 3 and Akka Streams to analyze ride wait times at Disneyland Paris. It uses a Pipe-and-Filter architecture to parse, analyze, and output metrics concurrently.
 
 ## Features
 
-[cite_start]The stream processing pipeline extracts meaningful insights from the dataset by answering six specific questions[cite: 226, 227]. 
-
-* [cite_start]**Data Parsing:** The raw CSV lines are parsed into a stream of typed objects[cite: 237].
-* **Stream Routing:** Uses a GraphDSL Broadcast shape to route the parsed records concurrently across six customized logical flows.
-* **Analytics:** Computes total rides, top 5 mean wait times, open percentage per ride, largest variance in wait times, park-wide hourly average, and dynamic skip-the-line pricing.
-* [cite_start]**Backpressure & Throttling:** A buffer with a capacity of 10 elements is applied along with a backpressure strategy[cite: 243, 244]. [cite_start]A throttle restricts the processing speed to 5000 elements per second[cite: 245].
-* [cite_start]**File Output:** The output of each custom flow is written to an external text file containing the corresponding results[cite: 248].
+* **Stream Parsing:** Reads and parses raw CSV data using Alpakka CSV.
+* **Concurrent Processing:** Uses Akka Streams `GraphDSL` with a Broadcast shape to route records through six distinct analytical flows simultaneously.
+* **Custom Analytics:** Computes total rides, top 5 mean wait times, open percentage per ride, highest wait time variance, park-wide hourly average, and dynamic pricing.
+* **Traffic Control:** Implements buffers (capacity of 10) with backpressure strategies and limits processing speed to 5000 elements per second.
+* **File I/O:** Automatically routes the results of each analytical flow to dedicated text files via Sinks.
 
 ## Prerequisites
 
-* Scala 3 and sbt must be installed.
-* [cite_start]The `queuetimes.csv` input file must be located in the `src/main/resources/` directory[cite: 236].
-* Dependencies for `akka-stream` and `akka-stream-alpakka-csv` must be included in your `build.sbt`.
+* Scala 3 and sbt installed on your machine.
+* The `queuetimes.csv` dataset must be placed in the `src/main/resources/` directory.
+* Required dependencies in your `build.sbt`: `akka-stream` and `akka-stream-alpakka-csv`.
 
 ## How to Run
 
-1. Clone this repository and navigate to the root folder.
-2. Ensure the dataset is correctly placed in the `resources` directory.
-3. Run the application using sbt:
+1. Clone the repository and navigate to the project root directory.
+2. Ensure the output directory exists at `src/main/resources/results/`.
+3. Execute the application using sbt:
    ```bash
    sbt run
